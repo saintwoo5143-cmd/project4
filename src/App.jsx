@@ -11,7 +11,7 @@ const sampleItems = Array.from({ length: 12 }).map((_, i) => ({
   image: `/bookcover1.png`
 }))
 
-export default function App() {
+function App() {
   const [query, setQuery] = useState('')
   const [apiKeyInput, setApiKeyInput] = useState('')
   const [savedApiKey, setSavedApiKey] = useState('')
@@ -44,3 +44,5 @@ export default function App() {
     </div>
   )
 }
+
+export default App
