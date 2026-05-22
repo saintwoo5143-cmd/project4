@@ -1,45 +1,37 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import './App.css'
-import ImageGrid from './components/ImageGrid'
+import ImageGrid from './views/ImageGrid'
 import Header from './components/Header'
+import { Routes, Route } from 'react-router-dom'
 
-
-const sampleItems = Array.from({ length: 12 }).map((_, i) => ({
-  id: `item-${i}`,
-  title: `책 이름 ${i + 1}`,
-  subtitle: `책에 관한 설명입니다. ${i + 1}.`,
-  image: `/bookcover1.png`
-}))
+import Home from './views/Home'
+import Create from './views/Create'
+import Update from './views/Update'
 
 function App() {
   const [query, setQuery] = useState('')
-  const [apiKeyInput, setApiKeyInput] = useState('')
-  const [savedApiKey, setSavedApiKey] = useState('')
 
-  useEffect(() => {
-    const saved = localStorage.getItem('apiKey') || ''
-    setSavedApiKey(saved)
-    setApiKeyInput(saved)
-  }, [])
-
-  const filteredItems = useMemo(() => {
-    const q = query.trim().toLowerCase()
-    if (!q) return sampleItems
-    return sampleItems.filter((item) => {
-      return (
-        item.title.toLowerCase().includes(q) ||
-        item.subtitle.toLowerCase().includes(q)
-      )
-    })
-  }, [query])
+  // const filteredItems = useMemo(() => {
+  //   const q = query.trim().toLowerCase()
+  //   if (!q) return sampleItems
+  //   return sampleItems.filter((item) => {
+  //     return (
+  //       item.title.toLowerCase().includes(q) ||
+  //       item.subtitle.toLowerCase().includes(q)
+  //     )
+  //   })
+  // }, [query])
 
   return (
     <div className="app-root">
-      <Header query={query} setQuery={setQuery} apiKeyInput={apiKeyInput} setApiKeyInput={setApiKeyInput} savedApiKey={savedApiKey} />
+      <Header />
 
       <main className="app-main">
-        <h2 className="page-title">Image Grid</h2>
-        <ImageGrid items={filteredItems} />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/list" element={<ImageGrid />} />
+          <Route path="/create" element={<Create />} />
+        </Routes>
       </main>
     </div>
   )
