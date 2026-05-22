@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react'
 import './App.css'
 import ImageGrid from './components/ImageGrid'
 import Header from './components/Header'
+import CreateForm from './components/CreateForm'
 
 
 const sampleItems = Array.from({ length: 12 }).map((_, i) => ({
@@ -35,7 +36,10 @@ export default function App() {
 
   return (
     <div className="app-root">
+
       <Header query={query} setQuery={setQuery} apiKeyInput={apiKeyInput} setApiKeyInput={setApiKeyInput} savedApiKey={savedApiKey} />
+
+      <CreateForm />
 
       <main className="app-main">
         <h2 className="page-title">Image Grid</h2>
