@@ -1,4 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+
+
+const sampleItems = Array.from({ length: 12 }).map((_, i) => ({
+  id: `item-${i}`,
+  title: `책 이름 ${i + 1}`,
+  subtitle: `책에 관한 설명입니다. ${i + 1}.`,
+  image: `/bookcover1.png`
+}))
 
 function Card({ item, onClick }) {
   return (
@@ -12,9 +20,21 @@ function Card({ item, onClick }) {
   )
 }
 
-export default function ImageGrid({ items = [] }) {
+export default function ImageGrid() {
   const [open, setOpen] = useState(false)
   const [selected, setSelected] = useState(null)
+
+  const [items, setItems] = useState(sampleItems)
+
+  useEffect(() => {
+    const sampleItems = Array.from({ length: 12 }).map((_, i) => ({
+      id: `item-${i}`,
+      title: `책 이름 ${i + 1}`,
+      subtitle: `책에 관한 설명입니다. ${i + 1}.`,
+      image: `/bookcover1.png`
+    }))
+    setItems(sampleItems)
+  }, [])
 
   const handleOpen = (item) => {
     setSelected(item)

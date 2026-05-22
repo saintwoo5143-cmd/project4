@@ -183,6 +183,8 @@
   }
 }
 
+
+
 /* App styles moved from inline */
 .app-root {
   font-family: sans-serif;
@@ -192,11 +194,17 @@
   color: white;
   padding: 10px 16px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 .app-title {
   margin: 0;
   font-size: 18px;
+}
+.header-nav {
+  display: flex;
+  gap: 16px;
+  align-items: center;
 }
 .header-center {
   flex: 1;
