@@ -1,6 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react'
-import { CssBaseline, Container, Typography, AppBar, Toolbar, Box, TextField, Button } from '@mui/material'
+import './App.css'
 import ImageGrid from './components/ImageGrid'
+import Header from './components/Header'
+
 
 const sampleItems = Array.from({ length: 12 }).map((_, i) => ({
   id: `item-${i}`,
@@ -32,58 +34,13 @@ export default function App() {
   }, [query])
 
   return (
-    <>
-      <CssBaseline />
+    <div className="app-root">
+      <Header query={query} setQuery={setQuery} apiKeyInput={apiKeyInput} setApiKeyInput={setApiKeyInput} savedApiKey={savedApiKey} />
 
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" component="div">
-            Image Gallery
-          </Typography>
-
-          <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-            <TextField
-              size="small"
-              variant="outlined"
-              placeholder="책 제목이나 설명으로 검색"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              sx={{ background: 'white', borderRadius: 1, width: { xs: 180, sm: 360 } }}
-            />
-          </Box>
-
-          <Box sx={{ display: 'flex', alignItems: 'right', gap: 1 }}>
-            <TextField
-              size="small"
-              type="password"
-              variant="outlined"
-              placeholder="API Key"
-              value={apiKeyInput}
-              onChange={(e) => setApiKeyInput(e.target.value)}
-              sx={{ background: 'white', borderRadius: 1, width: { xs: 140, sm: 220 } }}
-            />
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => {
-                localStorage.setItem('apiKey', apiKeyInput)
-                setSavedApiKey(apiKeyInput)
-              }}
-              disabled={apiKeyInput === savedApiKey}
-            >
-              {apiKeyInput === savedApiKey ? 'Saved' : 'Confirm'}
-            </Button>
-          </Box>
-        </Toolbar>
-      </AppBar>
-
-      <Container sx={{ py: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Image Grid
-        </Typography>
-      </Container>
-
-      <ImageGrid items={filteredItems} />
-    </>
+      <main className="app-main">
+        <h2 className="page-title">Image Grid</h2>
+        <ImageGrid items={filteredItems} />
+      </main>
+    </div>
   )
 }
