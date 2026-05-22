@@ -27,9 +27,26 @@ function App() {
       <Header />
 
       <main className="app-main">
+        {/* Search only visible on /list route */}
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/list" element={<ImageGrid />} />
+          <Route
+            path="/list"
+            element={
+              <>
+                <div className="header-center" style={{ marginBottom: '24px' }}>
+                  <input
+                    aria-label="search"
+                    className="search-input"
+                    placeholder="책 제목이나 설명으로 검색"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                  />
+                </div>
+                <ImageGrid query={query} />
+              </>
+            }
+          />
           <Route path="/create" element={<Create />} />
         </Routes>
       </main>

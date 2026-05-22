@@ -325,3 +325,18 @@
 .card-content { padding: 12px; }
 .card-content h3 { margin: 0 0 8px; font-size: 16px; }
 .card-content p { margin: 0; color: #555; }
+
+/* NavLink styles */
+.nav-link {
+  color: white;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.nav-link.active {
+  background-color: rgba(255, 255, 255, 0.3);
+}

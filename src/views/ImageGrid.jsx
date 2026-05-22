@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 
 
 const sampleItems = Array.from({ length: 12 }).map((_, i) => ({
@@ -20,7 +20,7 @@ function Card({ item, onClick }) {
   )
 }
 
-export default function ImageGrid() {
+export default function ImageGrid({ query = '' }) {
   const [open, setOpen] = useState(false)
   const [selected, setSelected] = useState(null)
 
@@ -36,6 +36,17 @@ export default function ImageGrid() {
     setItems(sampleItems)
   }, [])
 
+  const filteredItems = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    if (!q) return items
+    return items.filter((item) => {
+      return (
+        item.title.toLowerCase().includes(q) ||
+        item.subtitle.toLowerCase().includes(q)
+      )
+    })
+  }, [query, items])
+
   const handleOpen = (item) => {
     setSelected(item)
     setOpen(true)
@@ -49,7 +60,7 @@ export default function ImageGrid() {
   return (
     <div>
       <div className="image-grid">
-        {items.map((item) => (
+        {filteredItems.map((item) => (
           <Card key={item.id} item={item} onClick={() => handleOpen(item)} />
         ))}
       </div>
