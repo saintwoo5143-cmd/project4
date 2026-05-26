@@ -40,7 +40,7 @@ export default function ImageGrid({ query = '' }) {
   const [items, setItems] = useState(sampleItems)
 
   useEffect(() => {
-    // TODO: GET /books API 연결은 CRUD 담당자가 처리
+    // TODO: GET /books API 연결은  담당자가 처리
     setItems(sampleItems)
   }, [])
 
@@ -103,7 +103,7 @@ export default function ImageGrid({ query = '' }) {
             </div>
 
             {/* UI/레이아웃팀 담당: 좋아요 개수 표시 UI만 배치 */}
-            {/* TODO: 좋아요 클릭 기능과 PATCH /books/id 연결은 CRUD 담당자가 처리 */}
+            {/* TODO: 좋아요 클릭 기능과 PATCH /books/id 연결은 담당자가 처리 */}
             <div className="book-detail-actions">
               <div className="book-like-info">
                 <span>좋아요</span>
