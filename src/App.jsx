@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import './App.css'
-import ImageGrid from './views/ImageGrid'
+import List from './views/List'
 import Header from './components/Header'
 import { Routes, Route } from 'react-router-dom'
 
@@ -43,7 +43,7 @@ function App() {
                     onChange={(e) => setQuery(e.target.value)}
                   />
                 </div>
-                <ImageGrid query={query} />
+                <List query={query} />
               </>
             }
           />
