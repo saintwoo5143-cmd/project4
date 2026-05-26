@@ -10,30 +10,30 @@ import Update from './views/Update'
 
 function App() {
   const [query, setQuery] = useState('')
+  const navigate = useNavigate()
 
-  {/*const 추가*/} 
   const [books, setBooks] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  const bookURL = 'http://localhost:3000/books';
+  const bookURL = 'http://localhost:3000/books'
 
   {/*load*/}
   useEffect(() => {
     async function loadBooks() {
       try {
-        const res = await fetch(bookURL);
-        const data = await res.json();
-        setPosts(data);
-        console.log(data);
-      } catch(err) {
-        console.error(err);
-        setError('데이터를 불러오지 못했어요.');
+        const res = await fetch(bookURL)
+        const data = await res.json()
+        setBooks(data)
+        console.log(data)
+      } catch (err) {
+        console.error(err)
+        setError('데이터를 불러오지 못했어요.')
       }
-      setLoading(false);
+      setLoading(false)
     }
-    loadPosts();
-  }, []);
+    loadBooks()
+  }, [])
 
   {/*Add*/}
   const handleAddBook = async (newBook) => {
@@ -44,9 +44,9 @@ function App() {
           headers:{'Content-Type':'application/json'},
           body:JSON.stringify(newBook)
         });
-      const saved = await res.json();
-      setPosts([saved, ...books])
-      navigate('/list');
+      const saved = await res.json()
+      setBooks([saved, ...books])
+      navigate('/list')
     } catch (err) {
       console.error(err);
     }
@@ -91,9 +91,8 @@ function App() {
           body: JSON.stringify({likes: book.likes + 1})
         }
       );
-      const updated = await res.json();
-      setPosts(books.map(p =>p.id === id? updated : p)
-    );
+      const updated = await res.json()
+      setBooks(books.map((p) => (p.id === id ? updated : p)))
     } catch (err) {
       console.error(err);
     }
@@ -131,7 +130,7 @@ function App() {
                     onChange={(e) => setQuery(e.target.value)}
                   />
                 </div>
-                <List query={query} />
+                <List query={query} books={books} />
               </>
             }
           />

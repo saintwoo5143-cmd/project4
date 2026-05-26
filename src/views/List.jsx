@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
-import db from '../../db.json'
+import React, { useState, useMemo } from 'react'
 
 function Card({ item, onClick }) {
   return (
@@ -17,25 +16,20 @@ function Card({ item, onClick }) {
   )
 }
 
-export default function List({ query = '' }) {
+export default function List({ query = '', books = [] }) {
   const [open, setOpen] = useState(false)
   const [selected, setSelected] = useState(null)
-  const [items, setItems] = useState([])
-
-  useEffect(() => {
-    setItems(db.books || [])
-  }, [])
 
   const filteredItems = useMemo(() => {
     const q = query.trim().toLowerCase()
-    if (!q) return items
-    return items.filter((item) => {
+    if (!q) return books
+    return books.filter((item) => {
       return (
         item.title.toLowerCase().includes(q) ||
         item.content.toLowerCase().includes(q)
       )
     })
-  }, [query, items])
+  }, [query, books])
 
   const handleOpen = (item) => {
     setSelected(item)
