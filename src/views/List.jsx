@@ -1,10 +1,11 @@
 import React, { useState, useMemo } from 'react'
 
 function Card({ item, onClick }) {
- const imageSrc =
-  item.coverImageUrl && item.coverImageUrl.trim()
-    ? item.coverImageUrl
-    : item.image || '/noImage.jpg'
+  const imageSrc =
+    item.coverImageUrl && item.coverImageUrl.trim()
+      ? item.coverImageUrl
+      : item.image || '/noImage.jpg'
+
   return (
     <article
       className="list-book-card"

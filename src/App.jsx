@@ -23,7 +23,6 @@ function App() {
         const res = await fetch(bookURL)
         const data = await res.json()
         setBooks(data)
-        console.log(data)
       } catch (err) {
         console.error(err)
         setError('데이터를 불러오지 못했어요.')
@@ -81,7 +80,7 @@ function App() {
       const res = await fetch(`${bookURL}/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ likes: book.likes + 1 }),
+        body: JSON.stringify({ likes: (book.likes || 0) + 1 }),
       })
       const updated = await res.json()
       setBooks(books.map((book) => (book.id === id ? updated : book)))
