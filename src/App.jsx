@@ -96,7 +96,7 @@ function App() {
 
       <main className="app-main">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home books={books} />} />
           <Route
             path="/list"
             element={

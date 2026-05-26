@@ -1007,3 +1007,26 @@
     flex-direction: column;
   }
 }
+/* UI/레이아웃팀 담당: Home 인기 도서 카드 정보 UI */
+.home-book-card-info {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.home-book-card-info strong {
+  margin-top: 0;
+}
+
+.home-book-card-info span {
+  color: #6a6f7a;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.home-book-card-info em {
+  color: #d18b00;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 900;
+}
