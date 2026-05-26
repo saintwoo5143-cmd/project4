@@ -1,20 +1,35 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 
 function Card({ item, onClick }) {
   return (
     <div className="card" onClick={onClick}>
-      <img className="card-img" src={item.image} alt={item.title} />
+      <img
+        className="card-img"
+        src={item.coverImageUrl && item.coverImageUrl.trim() ? item.coverImageUrl : '/noImage.jpg'}
+        alt={item.title}
+      />
       <div className="card-content">
         <h3>{item.title}</h3>
-        <p>{item.subtitle}</p>
+        <p>{item.content}</p>
       </div>
     </div>
   )
 }
 
-export default function ImageGrid({ items = [] }) {
+export default function List({ query = '', books = [] }) {
   const [open, setOpen] = useState(false)
   const [selected, setSelected] = useState(null)
+
+  const filteredItems = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    if (!q) return books
+    return books.filter((item) => {
+      return (
+        item.title.toLowerCase().includes(q) ||
+        item.content.toLowerCase().includes(q)
+      )
+    })
+  }, [query, books])
 
   const handleOpen = (item) => {
     setSelected(item)
@@ -29,7 +44,7 @@ export default function ImageGrid({ items = [] }) {
   return (
     <div>
       <div className="image-grid">
-        {items.map((item) => (
+        {filteredItems.map((item) => (
           <Card key={item.id} item={item} onClick={() => handleOpen(item)} />
         ))}
       </div>
@@ -41,8 +56,12 @@ export default function ImageGrid({ items = [] }) {
               <h3>{selected.title}</h3>
               <button className="modal-close" onClick={handleClose}>✕</button>
             </div>
-            {selected.image && <img className="modal-image" src={selected.image} alt={selected.title} />}
-            <p className="modal-subtitle">{selected.subtitle}</p>
+            <img
+              className="modal-image"
+              src={selected.coverImageUrl && selected.coverImageUrl.trim() ? selected.coverImageUrl : '/noImage.jpg'}
+              alt={selected.title}
+            />
+            <p className="modal-subtitle">{selected.content}</p>
             <div className="modal-actions">
               <button className="modal-button" onClick={handleClose}>수정</button>
             </div>
