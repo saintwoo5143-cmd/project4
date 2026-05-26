@@ -1,18 +1,12 @@
-import React, { useState, useEffect, useMemo } from 'react'
-
-const sampleItems = Array.from({ length: 12 }).map((_, i) => ({
-  id: `item-${i}`,
-  title: `책 이름 ${i + 1}`,
-  author: `작가 ${String.fromCharCode(65 + (i % 6))}`,
-  createdAt: `2026.05.${String(i + 1).padStart(2, '0')}`,
-  subtitle: `책에 관한 설명입니다. ${i + 1}.`,
-  likes: 0,
-  image: '/bookcover1.png',
-}))
+import React, { useState, useMemo } from 'react'
 
 function Card({ item, onClick }) {
+  const imageSrc =
+    item.coverImageUrl && item.coverImageUrl.trim()
+      ? item.coverImageUrl
+      : item.image || '/noImage.jpg'
+
   return (
-    // UI/레이아웃팀 담당: List 카드에는 핵심 정보인 책 이름과 작가만 표시
     <article
       className="list-book-card"
       role="button"
@@ -25,38 +19,44 @@ function Card({ item, onClick }) {
         }
       }}
     >
-      <img className="list-book-image" src={item.image} alt={item.title} />
+      <img className="list-book-image" src={imageSrc} alt={item.title} />
       <div className="list-book-content">
         <h3>{item.title}</h3>
-        <p className="list-book-author">작가: {item.author}</p>
+        <p className="list-book-author">작가: {item.author || '저자 미상'}</p>
       </div>
     </article>
   )
 }
 
-export default function ImageGrid({ query = '' }) {
+export default function List({
+  query = '',
+  books = [],
+  loading = false,
+  error = null,
+  onLike,
+}) {
   const [open, setOpen] = useState(false)
   const [selected, setSelected] = useState(null)
-  const [items, setItems] = useState(sampleItems)
-
-  useEffect(() => {
-    // TODO: GET /books API 연결은  담당자가 처리
-    setItems(sampleItems)
-  }, [])
 
   const filteredItems = useMemo(() => {
     const q = query.trim().toLowerCase()
 
-    if (!q) return items
+    if (!q) return books
 
-    return items.filter((item) => {
+    return books.filter((item) => {
+      const title = item.title || ''
+      const author = item.author || ''
+      const content = item.content || ''
+      const subtitle = item.subtitle || ''
+
       return (
-        item.title.toLowerCase().includes(q) ||
-        item.subtitle.toLowerCase().includes(q) ||
-        item.author.toLowerCase().includes(q)
+        title.toLowerCase().includes(q) ||
+        author.toLowerCase().includes(q) ||
+        content.toLowerCase().includes(q) ||
+        subtitle.toLowerCase().includes(q)
       )
     })
-  }, [query, items])
+  }, [query, books])
 
   const handleOpen = (item) => {
     setSelected(item)
@@ -66,6 +66,20 @@ export default function ImageGrid({ query = '' }) {
   const handleClose = () => {
     setOpen(false)
     setSelected(null)
+  }
+
+  const handleLikeClick = () => {
+    if (selected && onLike) {
+      onLike(selected.id)
+    }
+  }
+
+  if (loading) {
+    return <p className="list-state-message">도서 목록을 불러오는 중입니다.</p>
+  }
+
+  if (error) {
+    return <p className="list-state-message">{error}</p>
   }
 
   return (
@@ -85,7 +99,7 @@ export default function ImageGrid({ query = '' }) {
               <div>
                 <h3>{selected.title}</h3>
                 {/* UI/레이아웃팀 담당: 작가 이름을 책 제목 아래에 배치 */}
-                <p className="book-detail-author">작가: {selected.author}</p>
+                <p className="book-detail-author">작가: {selected.author || '저자 미상'}</p>
               </div>
 
               <button type="button" className="book-detail-close" onClick={handleClose}>
@@ -93,24 +107,36 @@ export default function ImageGrid({ query = '' }) {
               </button>
             </div>
 
-            <img className="book-detail-image" src={selected.image} alt={selected.title} />
+            <img
+              className="book-detail-image"
+              src={
+                selected.coverImageUrl && selected.coverImageUrl.trim()
+                  ? selected.coverImageUrl
+                  : selected.image || '/noImage.jpg'
+              }
+              alt={selected.title}
+            />
 
             <div className="book-detail-body">
-              <p className="book-detail-desc">{selected.subtitle}</p>
-              <div className="book-detail-meta">
-                <span>등록일: {selected.createdAt}</span>
-              </div>
+              <p className="book-detail-desc">
+                {selected.subtitle || selected.content || '책 설명이 없습니다.'}
+              </p>
+              {selected.createdAt && (
+                <div className="book-detail-meta">
+                  <span>등록일: {selected.createdAt}</span>
+                </div>
+              )}
             </div>
 
             {/* UI/레이아웃팀 담당: 좋아요 개수 표시 UI만 배치 */}
-            {/* TODO: 좋아요 클릭 기능과 PATCH /books/id 연결은 담당자가 처리 */}
+            {/* TODO: 좋아요 클릭 기능과 PATCH /books/id 연결은 CRUD 담당자가 처리 */}
             <div className="book-detail-actions">
               <div className="book-like-info">
                 <span>좋아요</span>
-                <strong>{selected.likes}</strong>
+                <strong>{selected.likes || 0}</strong>
               </div>
 
-              <button type="button" className="book-like-button">
+              <button type="button" className="book-like-button" onClick={handleLikeClick}>
                 <span aria-hidden="true">😍</span>
                 좋아요
               </button>
